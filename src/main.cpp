@@ -1,19 +1,41 @@
 #include <iostream>
-#include "core/config.h"
+#include "core/logger.hpp"
+#include "core/config.hpp"
 
-#include "simulation/earth.h"
+#include "simulation/celestal_body.hpp"
 
-#include "modules/gps.h"
+#include "modules/board_computer.hpp"
+#include "modules/gps.hpp"
+#include "modules/power_system.hpp"
+#include "modules/telecommunications.hpp"
+#include "modules/captors.hpp"
+#include "modules/controller.hpp"
+#include "modules/imu.hpp"
+
+bool is_running = true;
+const double dt = 0.016;
 
 int main() {
-    load_config("config/config.json");
+    load_config("config.json");
 
     GPS gps;
-    Planet earth;
-    
-    for (int i = 0; i < 10; i++) {
-        std::cout << "Simulation " << (i + 1) << std::endl;
-        gps.emulate(earth);
+    IMU imu;
+    Telecommunications telecommunications;
+    PowerSystem power_system;
+    Captors captors;
+    BoardComputer board_computer(
+        gps,
+        imu,
+        telecommunications,
+        power_system,
+        captors
+    );
+    Controller controller(telecommunications);
+
+    Logger::log("Enabling satellite systems...", "Main", "INFO");
+    while(is_running) {
+        board_computer.emulate(dt);
+        controller.update(gps, imu, captors, power_system);
     }
     return EXIT_SUCCESS;
 }

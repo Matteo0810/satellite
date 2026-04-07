@@ -1,31 +1,30 @@
 # Satellite
+This project aims to simulate launched satellite in space, that rotate arround the earth. \
+It aims to be connected in real-time with a "earth station" (mqtt server) and be displayed on a web dashboard.
 
-## Modules disponibles
-### Système d’alimentation
-- panneaux solaires (production variable selon position)
-- batteries (charge/décharge)
-### Télécommunications
-- envoi de packets vers la Terre
-- latence
-- perte de signal
-### GPS
-- position x, y, z
-- latitude, longitude
-- vitesse orbitale
-
-Les distances par défaut:
-Vitesse orbitale: 7,8 km/s
-Position: x=36000km, y=0km, z=0km, latitude=0, longitude=0
-
+## Available modules
+### Power system
+- batteries
+- solar pannel production
+### Telecommunications
+- latency
+- signal loss
+- payload sent to earth
+# GPS
+- x, y, z position
+- orbitale speed
 ### IMU
-- gyroscopes (rotation)
+- rotation
 - pitch, yaw, roll
-### Capteurs environnementaux
-- température (extérieur)
-- radiation (niveau fictif)
-- luminosité solaire
-### Ordinateur de bord
-- état du satellite
-- lecture des capteurs
-- décisions (mode normal, panne, économie d’énergie)
-- envoi des données
+### Environmental captors
+- temperature
+- solar flux
+- radiation level
+### Board computer
+- captors' reading
+- decisions (normal mode, critical state, economic mode)
+- data sending
+
+## Technology used
+- **C++**: common language used for embedding systems (with C as well).
+- **MQTT Client**: mqtt aims to send in real-time all data sent from the satellite.

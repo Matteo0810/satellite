@@ -1,5 +1,5 @@
-#include "core/mqtt_client.h"
-#include "core/config.h"
+#include "core/mqtt_client.hpp"
+#include "core/config.hpp"
 
 void MqttClient::connect() {
     try {
@@ -22,8 +22,7 @@ void MqttClient::connect() {
         throw;
     }
 }
-void MqttClient::publish(const std::string& topic,
-                          const std::string& payload,
+void MqttClient::publish(const std::string& payload,
                           int qos) {
     try {
         if (!connected) {
@@ -31,7 +30,7 @@ void MqttClient::publish(const std::string& topic,
             return;
         }
 
-        auto msg = mqtt::make_message(topic, payload);
+        auto msg = mqtt::make_message(this->topic, payload);
         msg->set_qos(qos);
 
         auto tok = client->publish(msg);

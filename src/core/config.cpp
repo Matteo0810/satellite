@@ -1,6 +1,6 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include "core/config.h"
+#include "core/config.hpp"
 
 using json = nlohmann::json;
 Config cfg;

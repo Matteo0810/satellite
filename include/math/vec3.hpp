@@ -4,24 +4,24 @@
 
 class Vec3 {
 public:
-    float x, y, z;
+    double x, y, z;
 
-    Vec3(float x = 0, float y = 0, float z = 0);
+    Vec3(double x = 0, double y = 0, double z = 0);
 
     Vec3 operator+(const Vec3& o) const;
     Vec3 operator-(const Vec3& o) const;
-    Vec3 operator*(float s) const;
-    Vec3 operator/(float s) const;
+    Vec3 operator*(double s) const;
+    Vec3 operator/(double s) const;
 
     Vec3& operator+=(const Vec3& o);
     Vec3& operator-=(const Vec3& o);
-    Vec3& operator*=(float s);
-    Vec3& operator/=(float s);
+    Vec3& operator*=(double s);
+    Vec3& operator/=(double s);
 
-    float length2() const;
-    float length() const;
+    double length2() const;
+    double length() const;
 
-    float dot(const Vec3& o) const;
+    double dot(const Vec3& o) const;
     Vec3 cross(const Vec3& o) const;
 
     Vec3 normalized() const;
