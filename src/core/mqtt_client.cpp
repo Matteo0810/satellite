@@ -1,5 +1,4 @@
 #include "core/mqtt_client.hpp"
-#include "core/config.hpp"
 
 void MqttClient::connect() {
     try {

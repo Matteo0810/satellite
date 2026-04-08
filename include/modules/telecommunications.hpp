@@ -4,8 +4,9 @@
 #include <nlohmann/json.hpp>
 
 #include "simulation/celestal_body.hpp"
+
 #include "core/mqtt_client.hpp"
-#include "core/config.hpp"
+#include "core/constants.hpp"
 
 #include "modules/gps.hpp"
 
@@ -35,9 +36,9 @@ public:
         simTime(0),
         loss(0) {
             MqttClient client(
-                cfg.server,
-                cfg.client_id,
-                cfg.topic
+                BROKER_SERVER,
+                BROKER_CLIENT_ID,
+                BROKER_TOPIC
             );
             this->client = &client;
             this->client->connect();

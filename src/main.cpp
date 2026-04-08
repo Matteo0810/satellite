@@ -1,6 +1,5 @@
 #include <iostream>
 #include "core/logger.hpp"
-#include "core/config.hpp"
 
 #include "simulation/celestal_body.hpp"
 
@@ -16,8 +15,6 @@ bool is_running = true;
 const double dt = 0.016;
 
 int main() {
-    load_config("config.json");
-
     GPS gps;
     IMU imu;
     Telecommunications telecommunications;

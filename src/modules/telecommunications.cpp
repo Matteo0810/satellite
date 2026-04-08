@@ -16,7 +16,7 @@ void Telecommunications::send(const json& payload, const GPS* gps, const Vec3 ta
     const Vec3 ES = targetPosition - gps->getPosition();
     const double distance = ES.length();
 
-    const double latency = distance / celerity;
+    const double latency = distance / CELERITY;
 
     const double r = (double)rand() / RAND_MAX;
     const double loss = std::clamp(distance * r, 0.0, 1.0);

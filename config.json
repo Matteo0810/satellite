@@ -1,5 +1,0 @@
-{
-  "server": "mqtt://localhost:1883",
-  "client_id": "satellite",
-  "topic": "satellite/telemetry"
-}
