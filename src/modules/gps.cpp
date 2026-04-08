@@ -11,18 +11,27 @@ Vec3 GPS::getOrbitalSpeed() const {
     return this->orbitalSpeed;
 }
 void GPS::emulate(const CelestialBody planet, const double dt) {
-    const Vec3 S = this->getPosition();
-    const Vec3 E = planet.position;
-    const Vec3 ES = E - S;
+    Vec3 rVec = this->position - planet.position;
 
-    const double r = ES.length();
-    const Vec3 direction = ES.normalized();
+    double r2 = rVec.length2();
+    if (r2 < 1e-12) return;
 
-    const double M = planet.mass;
+    double r = std::sqrt(r2);
 
-    const Vec3 a = direction * ((G*M) / (r * r));
+    Vec3 radial = rVec / r;
 
-    this->orbitalSpeed += a * dt;
+    if (!this->initialized) {
+        Vec3 tangent = Vec3(radial.z, 0.0, -radial.x).normalized();
+
+        double v = std::sqrt(G * planet.mass / r);
+
+        this->orbitalSpeed = tangent * v;
+        this->initialized = true;
+    }
+
+    Vec3 acceleration = radial * (-(G * planet.mass) / r2);
+
+    this->orbitalSpeed += acceleration * dt;
     this->position += this->orbitalSpeed * dt;
 }
 

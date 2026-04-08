@@ -6,10 +6,10 @@
 
 class Controller {
 private:
-    Telecommunications telecommunications;
+    Telecommunications& telecommunications;
 public:
     Controller(
-        Telecommunications telecommunications
+        Telecommunications& telecommunications
     ): telecommunications(telecommunications) {}
     void update(
         const GPS& gps,

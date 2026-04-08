@@ -1,5 +1,7 @@
+#pragma once
 #include <mqtt/async_client.h>
 #include <string>
+#include "core/constants.hpp"
 
 class MqttClient {
 public:
@@ -24,4 +26,8 @@ private:
 
     std::unique_ptr<mqtt::async_client> client;
     bool connected;
+
+    void ensureConnected();
 };
+
+MqttClient& getMqttClient();

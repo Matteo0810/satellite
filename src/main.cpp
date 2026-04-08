@@ -1,38 +1,20 @@
 #include <iostream>
-#include "core/logger.hpp"
+#include <thread>
 
-#include "simulation/celestal_body.hpp"
+#include "core/mqtt_client.hpp"
 
-#include "modules/board_computer.hpp"
-#include "modules/gps.hpp"
-#include "modules/power_system.hpp"
-#include "modules/telecommunications.hpp"
-#include "modules/captors.hpp"
-#include "modules/controller.hpp"
-#include "modules/imu.hpp"
-
-bool is_running = true;
-const double dt = 0.016;
+#include "threads/mqtt.hpp"
+#include "threads/simulation.hpp"
 
 int main() {
-    GPS gps;
-    IMU imu;
-    Telecommunications telecommunications;
-    PowerSystem power_system;
-    Captors captors;
-    BoardComputer board_computer(
-        gps,
-        imu,
-        telecommunications,
-        power_system,
-        captors
-    );
-    Controller controller(telecommunications);
+    auto& mqtt = getMqttClient();
+    mqtt.connect();
 
-    Logger::log("Enabling satellite systems...", "Main", "INFO");
-    while(is_running) {
-        board_computer.emulate(dt);
-        controller.update(gps, imu, captors, power_system);
-    }
+    std::thread sim(simulationLoop);
+    std::thread net(mqttLoop);
+    
+    net.join();
+    sim.join();
+
     return EXIT_SUCCESS;
 }

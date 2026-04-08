@@ -4,6 +4,8 @@
 #include "math/vec3.hpp"
 #include "core/constants.hpp"
 #include "core/logger.hpp"
+#include "core/telemetry_buffer.hpp"
+
 #include "modules/telecommunications.hpp"
 
 float Telecommunications::getLatency() const {
@@ -15,11 +17,12 @@ float Telecommunications::getLoss() const {
 void Telecommunications::send(const json& payload, const GPS* gps, const Vec3 targetPosition) {
     const Vec3 ES = targetPosition - gps->getPosition();
     const double distance = ES.length();
-
+    const double distance_km = distance / 1000.0;
+    
     const double latency = distance / CELERITY;
 
-    const double r = (double)rand() / RAND_MAX;
-    const double loss = std::clamp(distance * r, 0.0, 1.0);
+    const double scale = 20000.0;
+    const double loss = 1.0 - exp(-distance_km / scale);
 
     Message message;
     message.arrivalTime = this->simTime + latency;
@@ -27,7 +30,6 @@ void Telecommunications::send(const json& payload, const GPS* gps, const Vec3 ta
     message.payload = payload.dump();
 
     this->queue.push(message);
-    Logger::log("Message content: " + payload.dump(), "Telecommunications", "INFO");
 }
 void Telecommunications::emulate(const double dt) {
     this->simTime += dt;
@@ -44,7 +46,7 @@ void Telecommunications::emulate(const double dt) {
         double r = (double)rand() / RAND_MAX;
 
         if (r >= msg.loss) {
-            this->client->publish(msg.payload);
+            telemetryBuffer.update(msg.payload);
         }
     }
 }

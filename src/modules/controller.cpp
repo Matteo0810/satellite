@@ -18,7 +18,6 @@ void Controller::update(
         {"power", powerSystem.isOk()}
     };
 
-    payload["position_valid"] = gps.isOk();
     if (gps.isOk()) {
         payload["position"] = {
             {"x", gps.getPosition().x},
@@ -32,22 +31,16 @@ void Controller::update(
             {"z", gps.getOrbitalSpeed().z}
         };
     }
-
-    payload["imu_valid"] = imu.isOk();
     if (imu.isOk()) {
         payload["rotation"] = imu.getRotation();
         payload["pitch"] = imu.getPitch();
         payload["yaw"] = imu.getYaw();
         payload["roll"] = imu.getRoll();
     }
-
-    payload["captors_valid"] = captors.isOk();
     if (captors.isOk()) {
         payload["temperature"] = captors.getTemperature();
         payload["solarFlux"] = captors.getSolarFlux();
     }
-
-    payload["power_valid"] = powerSystem.isOk();
     if (powerSystem.isOk()) {
         payload["battery"] = powerSystem.getBattery();
     }

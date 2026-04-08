@@ -6,6 +6,7 @@ class GPS {
 private:
     Vec3 position;
     Vec3 orbitalSpeed;
+    bool initialized = false;
 
 public:
     GPS():

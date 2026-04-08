@@ -1,6 +1,10 @@
 #include "core/mqtt_client.hpp"
 
+std::mutex mqttMutex;
+
 void MqttClient::connect() {
+    std::lock_guard<std::mutex> lock(mqttMutex);
+
     try {
         std::cout << "Connecting to broker: " << server_address << std::endl;
 
@@ -21,24 +25,43 @@ void MqttClient::connect() {
         throw;
     }
 }
-void MqttClient::publish(const std::string& payload,
-                          int qos) {
+void MqttClient::publish(const std::string& payload, int qos) {
     try {
-        if (!connected) {
-            std::cerr << "MQTT not connected, cannot publish" << std::endl;
+        if (!client || !client->is_connected()) {
+            std::cerr << "[MQTT] not connected\n";
             return;
         }
 
-        auto msg = mqtt::make_message(this->topic, payload);
+        auto msg = mqtt::make_message(topic, payload);
         msg->set_qos(qos);
 
-        auto tok = client->publish(msg);
-        tok->wait();
-
-        std::cout << "Published to " << topic
-                  << " : " << payload << std::endl;
+        client->publish(msg)->wait();
 
     } catch (const mqtt::exception& e) {
-        std::cerr << "Publish error: " << e.what() << std::endl;
+        std::cerr << "[MQTT ERROR publish] " << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "[MQTT ERROR unknown exception]\n";
     }
+}
+
+void MqttClient::ensureConnected() {
+    std::lock_guard<std::mutex> lock(mqttMutex);
+
+    if (client->is_connected()) return;
+
+    mqtt::connect_options opts;
+    opts.set_clean_session(true);
+    opts.set_keep_alive_interval(20);
+
+    client->connect(opts)->wait();
+
+}
+
+MqttClient& getMqttClient() {
+    static MqttClient instance(
+        BROKER_SERVER,
+        BROKER_CLIENT_ID,
+        BROKER_TOPIC
+    );
+    return instance;
 }

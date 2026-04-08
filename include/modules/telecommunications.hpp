@@ -28,21 +28,12 @@ private:
     float latency;
     float loss;
     float simTime;
-    MqttClient* client;
     std::priority_queue<Message, std::vector<Message>, MessageCompare> queue;
 public:
     Telecommunications() : 
         latency(0),
         simTime(0),
-        loss(0) {
-            MqttClient client(
-                BROKER_SERVER,
-                BROKER_CLIENT_ID,
-                BROKER_TOPIC
-            );
-            this->client = &client;
-            this->client->connect();
-        }
+        loss(0) {}
     float getLatency() const;
     float getLoss() const;
     void send(const json& payload, const GPS* gps, const Vec3 targetPosition);
