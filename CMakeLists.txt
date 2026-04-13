@@ -8,7 +8,6 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 add_executable(satellite ${SOURCES})
 
 target_include_directories(satellite PRIVATE include)
-find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(satellite
     paho-mqttpp3
