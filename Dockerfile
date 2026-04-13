@@ -7,6 +7,7 @@ COPY . .
 RUN apt-get update && apt-get install -y \
     cmake \
     libpaho-mqttpp-dev \
+    libpaho-mqtt-dev \
     nlohmann-json3-dev
 
 RUN mkdir build && cd build \

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "math/vec3.hpp"
 
 class Captors {
