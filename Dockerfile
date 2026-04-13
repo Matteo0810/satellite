@@ -17,6 +17,10 @@ FROM debian:bookworm-slim
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    libpaho-mqttpp3-1 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=builder /app/build/satellite /app/satellite
 
 CMD ["./satellite"]

@@ -17,6 +17,14 @@ target_link_directories(satellite PRIVATE
     /usr/local/lib
 )
 
+find_package(PahoMqttCpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
+
+target_link_libraries(satellite
+    PahoMqttCpp::paho-mqttpp3
+    nlohmann_json::nlohmann_json
+)
+
 target_link_libraries(satellite
     paho-mqttpp3
     paho-mqtt3a
