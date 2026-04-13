@@ -18,8 +18,8 @@ RUN apt-get update && apt-get install -y \
     libstdc++6 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /app/build/satellite /app/satellite
+COPY --from=builder /usr/local/lib64/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/
 
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
+COPY --from=builder /app/build/satellite /app/satellite
 
 CMD ["./satellite"]
