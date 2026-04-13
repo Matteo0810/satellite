@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdlib>
+
 constexpr double G = 6.674e-11; // km-1/s-1
 constexpr int CELERITY = 300000; // km/s
 
