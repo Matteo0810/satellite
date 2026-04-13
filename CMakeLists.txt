@@ -11,7 +11,6 @@ target_include_directories(satellite PRIVATE include)
 find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(satellite
-    nlohmann_json::nlohmann_json
     paho-mqttpp3
     paho-mqtt3a
 )
