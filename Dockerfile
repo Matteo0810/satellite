@@ -1,10 +1,13 @@
-FROM gcc:13 AS builder
+FROM gcc:15.2.0 AS builder
 
 WORKDIR /app
 
 COPY . .
 
-RUN apt-get update && apt-get install -y cmake
+RUN apt-get update && apt-get install -y \
+    cmake \
+    libpaho-mqttpp-dev \
+    nlohmann-json3-dev
 
 RUN mkdir build && cd build \
     && cmake .. \
