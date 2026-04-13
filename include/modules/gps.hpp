@@ -10,7 +10,7 @@ private:
 
 public:
     GPS():
-        position({ 36000.0f, 0.0, 1000.0 }),
+        position({ 36000.0f, 1.0, 1000.0 }),
         orbitalSpeed(7.8) {} // km/s
     Vec3 getPosition() const;
     Vec3 getOrbitalSpeed() const;
