@@ -59,7 +59,7 @@ void MqttClient::ensureConnected() {
 
 MqttClient& getMqttClient() {
     static MqttClient instance(
-        BROKER_SERVER,
+        get_broker_url(),
         BROKER_CLIENT_ID,
         BROKER_TOPIC
     );
